@@ -2,6 +2,7 @@ package com.iliaxp.liberaryapplication.ui.screens
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -20,13 +21,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.iliaxp.liberaryapplication.model.Book
+import com.iliaxp.liberaryapplication.model.Category
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BookDetailsScreen(
     book: Book,
     onBackClick: () -> Unit,
-    onBuyClick: () -> Unit
+    onBuyClick: () -> Unit,
+    onCategoryClick: (Category) -> Unit = {}
 ) {
     var showContent by remember { mutableStateOf(false) }
     
@@ -113,15 +116,28 @@ fun BookDetailsScreen(
                 ) {
                     // Category
                     Surface(
+                        modifier = Modifier
+                            .padding(vertical = 8.dp)
+                            .clickable { onCategoryClick(book.category) },
                         shape = RoundedCornerShape(12.dp),
                         color = MaterialTheme.colorScheme.primaryContainer
                     ) {
-                        Text(
-                            text = book.category.name,
-                            style = MaterialTheme.typography.titleMedium,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer,
-                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-                        )
+                        Row(
+                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                Icons.Default.Category,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onPrimaryContainer
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = book.category.name,
+                                style = MaterialTheme.typography.titleMedium,
+                                color = MaterialTheme.colorScheme.onPrimaryContainer
+                            )
+                        }
                     }
 
                     Spacer(modifier = Modifier.width(16.dp))

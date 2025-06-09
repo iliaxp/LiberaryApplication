@@ -70,19 +70,37 @@ class LibraryViewModel(private val context: Context) : ViewModel() {
     fun addToCart(book: Book) {
         val currentItems = _cartItems.value.toMutableList()
         val existingItem = currentItems.find { it.book.id == book.id }
-
+        
         if (existingItem != null) {
+            // Update quantity if item exists
             val index = currentItems.indexOf(existingItem)
             currentItems[index] = existingItem.copy(quantity = existingItem.quantity + 1)
         } else {
-            currentItems.add(CartItem(book, 1))
+            // Add new item if it doesn't exist
+            currentItems.add(CartItem(book = book, quantity = 1))
         }
-
+        
         _cartItems.value = currentItems
     }
 
-    fun removeFromCart(book: Book) {
-        _cartItems.value = _cartItems.value.filter { it.book.id != book.id }
+    fun updateCartItemQuantity(cartItem: CartItem, newQuantity: Int) {
+        val currentItems = _cartItems.value.toMutableList()
+        val index = currentItems.indexOfFirst { it.book.id == cartItem.book.id }
+        
+        if (index != -1) {
+            if (newQuantity > 0) {
+                currentItems[index] = cartItem.copy(quantity = newQuantity)
+            } else {
+                currentItems.removeAt(index)
+            }
+            _cartItems.value = currentItems
+        }
+    }
+
+    fun removeFromCart(cartItem: CartItem) {
+        val currentItems = _cartItems.value.toMutableList()
+        currentItems.removeAll { it.book.id == cartItem.book.id }
+        _cartItems.value = currentItems
     }
 
     fun clearCart() {
@@ -162,7 +180,7 @@ class LibraryViewModel(private val context: Context) : ViewModel() {
             Book(
                 id = "7",
                 name = "The Hundred Year Old Man",
-                imageUrl = "https://zabanmehrpub.com/wp-content/uploads/2023/07/Zamir.jpg",
+                imageUrl = "https://zabanmehrpub.com/wp-content/uploads/The-Hundred-Year-Old-Man.jpg",
                 price = 21,
                 category = Category.SCIENCE,
                 description = context.getString(R.string.the_100_year_old),
@@ -172,7 +190,7 @@ class LibraryViewModel(private val context: Context) : ViewModel() {
             Book(
                 id = "8",
                 name = "Zamir",
-                imageUrl = "https://zabanmehrpub.com/wp-content/uploads/The-Hundred-Year-Old-Man.jpg",
+                imageUrl = "https://zabanmehrpub.com/wp-content/uploads/2023/07/Zamir.jpg",
                 price = 13,
                 category = Category.SCIENCE,
                 description = context.getString(R.string.zamir),

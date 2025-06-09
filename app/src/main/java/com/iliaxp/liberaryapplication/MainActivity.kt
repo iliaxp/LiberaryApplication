@@ -2,15 +2,20 @@ package com.iliaxp.liberaryapplication
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.activity.OnBackPressedCallback
-import androidx.compose.animation.*
-import androidx.compose.animation.core.*
+import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -18,11 +23,17 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.iliaxp.liberaryapplication.model.Book
-import com.iliaxp.liberaryapplication.ui.screens.*
+import com.iliaxp.liberaryapplication.ui.screens.BookDetailScreen
+import com.iliaxp.liberaryapplication.ui.screens.BookDetailsScreen
+import com.iliaxp.liberaryapplication.ui.screens.CartScreen
+import com.iliaxp.liberaryapplication.ui.screens.LibraryScreen
+import com.iliaxp.liberaryapplication.ui.screens.PaymentScreen
+import com.iliaxp.liberaryapplication.ui.screens.RegisterScreen
+import com.iliaxp.liberaryapplication.ui.screens.SplashScreen
+import com.iliaxp.liberaryapplication.ui.screens.WelcomeScreen
 import com.iliaxp.liberaryapplication.ui.theme.LibraryApplicationTheme
 import com.iliaxp.liberaryapplication.viewmodel.LibraryViewModel
 import com.iliaxp.liberaryapplication.viewmodel.LibraryViewModelFactory
-import androidx.compose.ui.platform.LocalContext
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,7 +58,9 @@ class MainActivity : ComponentActivity() {
                         factory = LibraryViewModelFactory(LocalContext.current)
                     )
                     val cartItems by libraryViewModel.cartItems.collectAsState()
-                    val totalAmount = cartItems.fold(0.0) { acc, cartItem -> acc + cartItem.book.price }
+                    val totalAmount = cartItems.fold(0.0) { acc, cartItem -> 
+                        acc + (cartItem.book.price * cartItem.quantity) 
+                    }
 
                     // Handle back press
                     val backHandler = remember {
@@ -99,26 +112,34 @@ class MainActivity : ComponentActivity() {
                     } else if (showPayment) {
                         // Show payment screen
                         PaymentScreen(
+                            totalAmount = totalAmount,
                             onBackClick = {
                                 showPayment = false
                             },
                             onPaymentComplete = {
+                                libraryViewModel.clearCart()
                                 showPayment = false
                                 showCart = false
                                 selectedBook = null
-                            },
-                            totalAmount = totalAmount
+                            }
                         )
                     } else if (showCart) {
                         // Show cart screen
                         CartScreen(
+                            cartItems = cartItems,
                             onBackClick = {
                                 showCart = false
-                                selectedBook = null
                             },
                             onCheckoutClick = {
                                 showPayment = true
-                            }
+                            },
+                            onQuantityChange = { cartItem, newQuantity ->
+                                libraryViewModel.updateCartItemQuantity(cartItem, newQuantity)
+                            },
+                            onRemoveItem = { cartItem ->
+                                libraryViewModel.removeFromCart(cartItem)
+                            },
+                            viewModel = libraryViewModel
                         )
                     } else if (selectedBook != null) {
                         // Show book details screen
@@ -130,6 +151,10 @@ class MainActivity : ComponentActivity() {
                             onBuyClick = {
                                 libraryViewModel.addToCart(selectedBook!!)
                                 showCart = true
+                            },
+                            onCategoryClick = { category ->
+                                libraryViewModel.setSelectedCategory(category)
+                                selectedBook = null
                             }
                         )
                     } else {
@@ -210,9 +235,17 @@ fun LibraryApp() {
             }
 
             composable("cart") {
+                val cartItems by viewModel.cartItems.collectAsState()
                 CartScreen(
+                    cartItems = cartItems,
                     onBackClick = { navController.popBackStack() },
                     onCheckoutClick = { navController.navigate("payment") },
+                    onQuantityChange = { cartItem, newQuantity ->
+                        viewModel.updateCartItemQuantity(cartItem, newQuantity)
+                    },
+                    onRemoveItem = { cartItem ->
+                        viewModel.removeFromCart(cartItem)
+                    },
                     viewModel = viewModel
                 )
             }

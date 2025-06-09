@@ -76,7 +76,7 @@ fun LibraryScreen(
                         enter = fadeIn() + expandHorizontally(),
                         exit = fadeOut() + shrinkHorizontally()
                     ) {
-                        Text("Library App")
+                        Text("Mahdi Shelf")
                     }
                 },
                 actions = {
@@ -113,9 +113,9 @@ fun LibraryScreen(
             item {
                 ImageSlider(
                     images = listOf(
-                        "https://img.freepik.com/free-photo/books-assortment-with-dark-background_23-2148898304.jpg",
-                        "https://img.freepik.com/free-photo/books-assortment-with-dark-background_23-2148898304.jpg",
-                        "https://img.freepik.com/free-photo/books-stack-with-copy-space_23-2148898305.jpg"
+                        "https://s33.picofile.com/file/8484992450/432.png",
+                        "https://s33.picofile.com/file/8484992534/421.png",
+                        "https://s33.picofile.com/file/8484992584/455.png"
                     ),
                     modifier = Modifier.padding(16.dp)
                 )
