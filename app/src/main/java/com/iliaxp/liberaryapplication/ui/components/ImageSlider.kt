@@ -4,7 +4,9 @@ import androidx.compose.animation.*
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
@@ -31,7 +33,8 @@ import kotlin.math.absoluteValue
 fun ImageSlider(
     images: List<String>,
     modifier: Modifier = Modifier,
-    autoSlideInterval: Long = 4000 // 4 seconds
+    autoSlideInterval: Long = 4000, // 4 seconds
+    lazyListState: LazyListState? = null // Add LazyListState parameter
 ) {
     val pagerState = rememberPagerState(
         initialPage = 0,
@@ -60,6 +63,19 @@ fun ImageSlider(
             .fillMaxWidth()
             .height(200.dp)
             .clip(RoundedCornerShape(16.dp))
+            .clickable {
+                // Smooth scroll to Books section when clicked
+                lazyListState?.let { state ->
+                    coroutineScope.launch {
+                        // Find the index of the Books section
+                        val booksSectionIndex = 2 // Index of Books section (after slider and categories)
+                        state.animateScrollToItem(
+                            index = booksSectionIndex,
+                            scrollOffset = 0
+                        )
+                    }
+                }
+            }
     ) {
         // Image Pager with custom animations
         HorizontalPager(

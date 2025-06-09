@@ -28,6 +28,7 @@ import androidx.compose.ui.text.input.ImeAction
 import com.iliaxp.liberaryapplication.ui.components.BookFilterDropdown
 import com.iliaxp.liberaryapplication.ui.components.BookSortOption
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.foundation.lazy.rememberLazyListState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,6 +43,7 @@ fun LibraryScreen(
     val isSearchActive by viewModel.isSearchActive.collectAsState()
     val filteredBooks by viewModel.filteredBooks.collectAsState()
     var selectedSortOption by remember { mutableStateOf(BookSortOption.MOST_POPULAR) }
+    val lazyListState = rememberLazyListState()
 
     // Sort books based on selected option
     val sortedBooks = remember(filteredBooks, selectedSortOption) {
@@ -119,6 +121,7 @@ fun LibraryScreen(
         }
     ) { paddingValues ->
         LazyColumn(
+            state = lazyListState,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues),
@@ -132,7 +135,8 @@ fun LibraryScreen(
                         "https://s33.picofile.com/file/8484992534/421.png",
                         "https://s33.picofile.com/file/8484992584/455.png"
                     ),
-                    modifier = Modifier.padding(16.dp)
+                    modifier = Modifier.padding(16.dp),
+                    lazyListState = lazyListState
                 )
             }
 
