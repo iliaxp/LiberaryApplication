@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -91,11 +92,9 @@ fun BookCard(
 
             // Author
             Text(
-                text = book.author,
+                text = "By ${book.author}",
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.secondary,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
             )
 
             Spacer(modifier = Modifier.height(4.dp))
@@ -113,6 +112,15 @@ fun BookCard(
                     modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                 )
             }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // Rating
+            RatingBar(
+                rating = book.rating,
+                modifier = Modifier.padding(vertical = 4.dp),
+                starSize = 16
+            )
 
             Spacer(modifier = Modifier.height(8.dp))
 
