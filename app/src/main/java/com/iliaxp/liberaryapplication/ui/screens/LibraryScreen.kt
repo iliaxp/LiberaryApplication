@@ -25,6 +25,9 @@ import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.text.input.ImeAction
+import com.iliaxp.liberaryapplication.ui.components.BookFilterDropdown
+import com.iliaxp.liberaryapplication.ui.components.BookSortOption
+import androidx.compose.ui.text.font.FontWeight
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -38,6 +41,18 @@ fun LibraryScreen(
     val searchQuery by viewModel.searchQuery.collectAsState()
     val isSearchActive by viewModel.isSearchActive.collectAsState()
     val filteredBooks by viewModel.filteredBooks.collectAsState()
+    var selectedSortOption by remember { mutableStateOf(BookSortOption.MOST_POPULAR) }
+
+    // Sort books based on selected option
+    val sortedBooks = remember(filteredBooks, selectedSortOption) {
+        when (selectedSortOption) {
+            BookSortOption.MOST_POPULAR -> filteredBooks.sortedByDescending { it.rating }
+            BookSortOption.TITLE -> filteredBooks.sortedBy { it.name }
+            BookSortOption.PRICE_LOW_TO_HIGH -> filteredBooks.sortedBy { it.price }
+            BookSortOption.PRICE_HIGH_TO_LOW -> filteredBooks.sortedByDescending { it.price }
+            BookSortOption.RATING -> filteredBooks.sortedByDescending { it.rating }
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -130,18 +145,33 @@ fun LibraryScreen(
                 )
             }
 
-            // Books Label
+            // Books Header with Filter
             item {
-                Text(
-                    text = "Books:",
-                    style = MaterialTheme.typography.titleLarge,
-                    modifier = Modifier.padding(horizontal = 16.dp)
-                )
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 24.dp, vertical = 12.dp),
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "Books:",
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(end = 16.dp)
+                    )
+                    
+                    BookFilterDropdown(
+                        selectedOption = selectedSortOption,
+                        onOptionSelected = { selectedSortOption = it },
+                        modifier = Modifier.padding(start = 8.dp)
+                    )
+                }
             }
 
             // Books Grid
             items(
-                items = filteredBooks.chunked(2),
+                items = sortedBooks.chunked(2),
                 key = { it.first().id }
             ) { rowBooks ->
                 Row(

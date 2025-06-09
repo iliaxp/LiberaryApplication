@@ -63,8 +63,8 @@ fun SplashScreen(
             .background(
                 brush = Brush.verticalGradient(
                     colors = listOf(
-                        Color(0xFF1A237E), // Deep Indigo
-                        Color(0xFF3949AB)  // Indigo
+                        Color(0xFF6247FF), // Deep Indigo
+                        Color(0xFF4A2AE6)  // Indigo
                     )
                 )
             ),
@@ -79,7 +79,7 @@ fun SplashScreen(
         ) {
             // Logo with animations
             Image(
-                painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                painter = painterResource(id = R.drawable.mainicon2),
                 contentDescription = "Logo",
                 modifier = Modifier
                     .size(120.dp)
@@ -91,7 +91,7 @@ fun SplashScreen(
 
             // App name with fade-in animation
             Text(
-                text = "BookStore",
+                text = "Mahdi Shelf",
                 color = Color.White,
                 fontSize = 32.sp,
                 fontWeight = FontWeight.Bold,
@@ -120,7 +120,7 @@ fun SplashScreen(
                 contentAlignment = Alignment.Center
             ) {
                 CircularProgressIndicator(
-                    color = Color(0xFF64B5F6), // Light Blue
+                    color = Color(0xFFFFFFFF), // Light Blue
                     strokeWidth = 3.dp,
                     modifier = Modifier.size(32.dp)
                 )

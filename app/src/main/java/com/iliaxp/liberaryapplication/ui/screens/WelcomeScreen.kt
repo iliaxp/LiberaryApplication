@@ -44,8 +44,8 @@ fun WelcomeScreen(
             .background(
                 brush = Brush.verticalGradient(
                     colors = listOf(
-                        Color(0xFF1A237E), // Deep Indigo
-                        Color(0xFF3949AB)  // Indigo
+                        Color(0xFF6247FF), // Deep Indigo
+                        Color(0xFF4A2AE6)  // Indigo
                     )
                 )
             )
@@ -74,10 +74,10 @@ fun WelcomeScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = "Welcome to BookStore",
+                        text = "Welcome to Mahdi Shelf App",
                         style = MaterialTheme.typography.headlineMedium,
                         fontWeight = FontWeight.Bold,
-                        color = Color(0xFF1A237E), // Deep Indigo
+                        color = Color(0xFF282828), // Deep Indigo
                         textAlign = TextAlign.Center,
                         modifier = Modifier.padding(bottom = 16.dp)
                     )
@@ -88,7 +88,7 @@ fun WelcomeScreen(
                                "Start your reading journey today!",
                         style = MaterialTheme.typography.bodyLarge,
                         textAlign = TextAlign.Center,
-                        color = Color(0xFF3949AB).copy(alpha = 0.8f), // Indigo with opacity
+                        color = Color(0xFF272727).copy(alpha = 0.8f), // Indigo with opacity
                         modifier = Modifier.padding(horizontal = 16.dp)
                     )
                 }
@@ -114,7 +114,7 @@ fun WelcomeScreen(
                         .width(200.dp)
                         .clip(RoundedCornerShape(28.dp)),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFF64B5F6), // Light Blue
+                        containerColor = Color(0xFFFFFFFF), // Light Blue
                         contentColor = Color.White
                     ),
                     elevation = ButtonDefaults.buttonElevation(
@@ -125,7 +125,8 @@ fun WelcomeScreen(
                     Text(
                         text = "Get Started",
                         fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xFF282828)
                     )
                 }
             }
