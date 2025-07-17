@@ -10,7 +10,6 @@ enum class Category {
     DRAMA,
     FANTASY,
     SCIENCE_FICTION;
-
     override fun toString(): String {
         return name.lowercase().replace("_", " ").replaceFirstChar { it.uppercase() }
     }

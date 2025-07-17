@@ -13,6 +13,7 @@ iocoil = "2.5.0"
 accompanist = "0.32.0"
 androidxcomposematerial = "1.6.3"
 lifecycle = "2.7.0"
+appcompat = "1.7.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -34,6 +35,7 @@ io-coil = { group = "io.coil-kt", name = "coil-compose", version.ref = "iocoil" 
 com-google-accompanist = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "accompanist" }
 androidx-compose-material = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "androidxcomposematerial" }
 androidx-lifecycle = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycle" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 
 
 [plugins]

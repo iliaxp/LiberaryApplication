@@ -1,4 +1,4 @@
-package com.iliaxp.liberaryapplication.ui.components
+ package com.iliaxp.liberaryapplication.ui.components
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
@@ -20,6 +20,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import coil.compose.AsyncImage
@@ -28,8 +29,10 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
 
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
+
 fun ImageSlider(
     images: List<String>,
     modifier: Modifier = Modifier,
